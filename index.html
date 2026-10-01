@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Taipei Food & Whisky Trip · 2026</title>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--bg:#f6f4ef;--ink:#17202a;--card:#fff;--red:#e05252;--blue:#3579d6;--gray:#8b9198;--gold:#d9a22e}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:16px 18px 10px;background:rgba(255,255,255,.94);position:sticky;top:0;z-index:1001;border-bottom:1px solid #e9e5dd}
+h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
+.controls{display:flex;gap:8px;margin-top:12px;overflow:auto}.btn{border:0;border-radius:999px;padding:10px 14px;font-weight:800;background:#eceae5;white-space:nowrap}
+.btn.active.d1{background:var(--red);color:#fff}.btn.active.d2{background:var(--blue);color:#fff}.btn.active.candidate{background:#60666d;color:#fff}
+#map{height:58vh;min-height:420px}
+.panel{padding:14px 14px 30px;max-width:920px;margin:auto}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#666;margin-bottom:10px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.route-title{font-weight:900;font-size:17px;margin:10px 0 8px}.route{display:flex;gap:8px;overflow:auto;padding-bottom:8px}
+.stop{background:#fff;border:1px solid #e5e1d8;border-radius:14px;padding:10px 12px;min-width:148px;box-shadow:0 2px 8px #00000008}
+.stop small{display:block;color:#888;margin-top:3px}.candidate-card{border-left:5px solid var(--gray)}
+.marker{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 8px #0004}
+.marker span{transform:rotate(45deg);font-size:14px;color:#fff;font-weight:900}
+.popup h3{margin:0 0 5px;font-size:15px}.popup p{margin:4px 0;font-size:12px}.maps{display:inline-block;margin-top:7px;background:#17202a;color:#fff!important;text-decoration:none;padding:7px 9px;border-radius:8px;font-weight:700}
+.note{font-size:12px;color:#777;line-height:1.5;margin-top:10px}
+@media(min-width:900px){#map{height:68vh}.layout{display:grid;grid-template-columns:1fr 390px}.panel{height:68vh;overflow:auto;padding-top:18px}}
+</style>
+</head>
+<body>
+<header>
+<h1>TAIPEI FOOD & WHISKY TRIP 🇹🇼</h1>
+<div class="sub">2026.10.14–15 · 철우 × KUMO · 1차 동선안</div>
+<div class="controls">
+<button class="btn d1 active" data-day="1">DAY 1 · TAIPEI</button>
+<button class="btn d2" data-day="2">DAY 2 · KAVALAN</button>
+<button class="btn candidate active" id="candidateBtn">● 회색 후보 ON</button>
+</div>
+</header>
+<div class="layout">
+<div id="map"></div>
+<div class="panel">
+<div class="legend"><span><i class="dot" style="background:#e05252"></i>DAY1</span><span><i class="dot" style="background:#3579d6"></i>DAY2</span><span><i class="dot" style="background:#8b9198"></i>미확정 후보</span></div>
+<div id="route"></div>
+<div class="note">※ 카카오톡에서 합의/언급된 장소를 기준으로 만든 1차판입니다. 회색 핀은 다음 단계에서 실제 영업정보·거리·메뉴를 비교해 선택/삭제할 후보입니다. 지도는 인터넷 연결 시 OpenStreetMap 타일을 불러옵니다.</div>
+</div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const places=[
+{id:'hotel',day:1,name:'시먼딩 숙소',emoji:'🏨',lat:25.0438,lng:121.5078,note:'여행 거점 · 정확한 숙소 위치 확정 후 수정'},
+{id:'aychung',day:1,name:'아종면선',emoji:'🍜',lat:25.04325,lng:121.50728,note:'곱창국수 · MUST EAT',url:'https://maps.app.goo.gl/BuWUjwNzEPTeG6Pa8?g_st=ic'},
+{id:'monga',day:1,name:'Monga Fried Chicken',emoji:'🍗',lat:25.04225,lng:121.50805,note:'지파이 · 시먼역 후보',url:'https://maps.app.goo.gl/3crTYvfLoCXC5uk9A'},
+{id:'redhouse',day:1,name:'서문홍루',emoji:'🏮',lat:25.0420,lng:121.5069,note:'시먼딩 산책'},
+{id:'carrefour',day:1,name:'까르푸',emoji:'🛒',lat:25.0385,lng:121.5065,note:'간식·우유·주류·기념품 쇼핑',url:'https://maps.app.goo.gl/i2nYKuwt7W9MAg4N6?g_st=com.iwilab.KakaoTalk.Share'},
+{id:'real58',day:1,name:'REAL 58 주류샵',emoji:'🥃',lat:25.0418,lng:121.5074,note:'위스키 가격/재고 확인'},
+{id:'yongkang',day:1,name:'융캉제',emoji:'🫓',lat:25.0328,lng:121.5296,note:'총좌빙 등 먹거리 구역'},
+{id:'ningxia',day:1,name:'닝샤야시장',emoji:'🌙',lat:25.0566,lng:121.5154,note:'굴전·샹창·지파이'},
+{id:'hotel2',day:1,name:'시먼딩 복귀',emoji:'🍺',lat:25.0441,lng:121.5075,note:'꼬치/맥주 · 1일차 마무리'},
+
+{id:'breakfast',day:2,name:'또우장 + 요우티아오',emoji:'🥣',lat:25.0455,lng:121.5140,note:'시간 여유 있을 때 · 아침 후보',url:'https://maps.app.goo.gl/YCyC6zaQzEuYi5Ar8'},
+{id:'yilan',day:2,name:'이란역',emoji:'🚉',lat:24.7544,lng:121.7581,note:'카발란 이동 거점'},
+{id:'kavalan',day:2,name:'Kavalan Distillery',emoji:'🥃',lat:24.6947,lng:121.6917,note:'증류소 관람 · 시음 · DIY 블렌딩 · 아이스크림 · Bottle Shop'},
+{id:'yilan2',day:2,name:'이란역 복귀',emoji:'🚕',lat:24.7547,lng:121.7584,note:'식사 후 타이베이 이동'},
+{id:'taipei',day:2,name:'타이베이/시먼딩',emoji:'🍺',lat:25.0440,lng:121.5076,note:'2일차 저녁 · 미확정'},
+
+{id:'beef',day:1,candidate:true,name:'우육면',emoji:'🍜',lat:25.0460,lng:121.5070,note:'카톡 저장 후보 · 최종 식당 선택 필요',url:'https://maps.app.goo.gl/HLv8EfxvGcoMaAXa8'},
+{id:'boba',day:1,candidate:true,name:'흑당밀크티',emoji:'🧋',lat:25.0448,lng:121.5079,note:'후보',url:'https://maps.app.goo.gl/B36xigT9yraPUN3T8?g_st=ic'},
+{id:'dumpling',day:1,candidate:true,name:'새우만두 + 작장면',emoji:'🥟',lat:25.0484,lng:121.5145,note:'타이베이역 인근 후보',url:'https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic'},
+{id:'pancake',day:1,candidate:true,name:'딴삥 / 총좌빙',emoji:'🫓',lat:25.0332,lng:121.5294,note:'융캉제 후보',url:'https://maps.app.goo.gl/iAELHzrduY9R39z76?g_st=ic'},
+{id:'donut',day:1,candidate:true,name:'우유도넛',emoji:'🍩',lat:25.0450,lng:121.5110,note:'후보 · 위치 재확인',url:'https://maps.app.goo.gl/bgU5aYWEizdhXrgG8?g_st=ic'},
+{id:'ice',day:1,candidate:true,name:'삼형제빙수',emoji:'🍧',lat:25.0442,lng:121.5071,note:'망고빙수 NT$280 언급',url:'https://maps.app.goo.gl/Gvsy1GRdn7y5rADU8?g_st=ic'},
+{id:'oyster',day:1,candidate:true,name:'굴전',emoji:'🦪',lat:25.0568,lng:121.5152,note:'닝샤야시장 후보',url:'https://maps.app.goo.gl/eHWQNcKNLajm8Sba6'},
+{id:'sesame',day:2,candidate:true,name:'이란 마장면',emoji:'🍜',lat:24.7549,lng:121.7574,note:'카발란 후 해장 후보',url:'https://maps.app.goo.gl/EKPzUMuoF5PwgaMq7?g_st=ic'},
+{id:'milkice',day:2,candidate:true,name:'이란 우유빙수',emoji:'🍧',lat:24.7556,lng:121.7590,note:'이란 디저트 후보',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
+{id:'ruyi',day:1,candidate:true,name:'루이탕 펑리수',emoji:'🎁',lat:25.0457,lng:121.5100,note:'시식 많이 주는 곳으로 메모',url:'https://maps.app.goo.gl/zcSYXt8wkFPmcMCQA?g_st=ic'},
+{id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'}
+];
+
+const map=L.map('map',{zoomControl:false}).setView([25.045,121.512],14);
+L.control.zoom({position:'bottomright'}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+let day=1, candidates=true, layers=[];
+
+function icon(p){
+ const color=p.candidate?'#8b9198':p.day===1?'#e05252':'#3579d6';
+ return L.divIcon({className:'',html:`<div class="marker" style="background:${color}"><span>${p.emoji}</span></div>`,iconSize:[30,30],iconAnchor:[15,30]});
+}
+function clear(){layers.forEach(x=>map.removeLayer(x));layers=[]}
+function draw(){
+ clear();
+ const shown=places.filter(p=>p.day===day && (!p.candidate || candidates));
+ const confirmed=places.filter(p=>p.day===day && !p.candidate);
+ confirmed.forEach((p,i)=>p.order=i+1);
+ shown.forEach(p=>{
+   let html=`<div class="popup"><h3>${p.candidate?'후보 · ':p.order+'. '}${p.emoji} ${p.name}</h3><p>${p.note}</p>`;
+   if(p.url) html+=`<a class="maps" target="_blank" href="${p.url}">Google Maps 열기</a>`;
+   html+='</div>';
+   const m=L.marker([p.lat,p.lng],{icon:icon(p)}).bindPopup(html).addTo(map);layers.push(m);
+ });
+ const coords=confirmed.map(p=>[p.lat,p.lng]);
+ const line=L.polyline(coords,{color:day===1?'#e05252':'#3579d6',weight:5,opacity:.72,dashArray:'10 8'}).addTo(map);layers.push(line);
+ map.fitBounds(L.latLngBounds(shown.map(p=>[p.lat,p.lng])).pad(.16));
+ renderRoute(confirmed,shown.filter(p=>p.candidate));
+}
+function renderRoute(conf,cand){
+ document.getElementById('route').innerHTML=
+ `<div class="route-title">DAY ${day} 확정 동선</div><div class="route">${conf.map((p,i)=>`<div class="stop"><b>${i+1}. ${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join('')}</div>`+
+ `<div class="route-title">회색 후보 · 다음에 고르기</div><div class="route">${cand.length?cand.map(p=>`<div class="stop candidate-card"><b>${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join(''):'<div class="stop">후보 핀이 꺼져 있습니다.</div>'}</div>`;
+}
+document.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{
+ day=+b.dataset.day;
+ document.querySelectorAll('[data-day]').forEach(x=>x.classList.toggle('active',+x.dataset.day===day));
+ draw();
+});
+document.getElementById('candidateBtn').onclick=e=>{
+ candidates=!candidates;e.currentTarget.classList.toggle('active',candidates);
+ e.currentTarget.textContent=candidates?'● 회색 후보 ON':'○ 회색 후보 OFF';draw();
+};
+draw();
+</script>
+</body></html>
