@@ -138,7 +138,6 @@ const places=[{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️
 {id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'}
 ];
 
-const markers={};
 const map=L.map('map',{zoomControl:false}).setView([25.045,121.512],14);
 L.control.zoom({position:'bottomright'}).addTo(map);
 // API 키가 필요 없는 OpenStreetMap 배경지도 + 주요 지역 한글 라벨
@@ -240,7 +239,6 @@ function renderRoute(conf,cand){
  <div class="route-title">📍 DAY 3 귀국일 가이드</div>
  <div class="travelbox"><strong>🏨 HOTEL PURI → 🍜 아종면선</strong><br><small>호텔과 아종면선은 직선거리 약 80m 수준. 골목/횡단을 포함해 도보 약 2~4분 예상.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=HOTEL+PURI+XIMEN+BRANCH&destination=Ay-Chung+Flour-Rice+Noodle&travelmode=walking">🚶 약 2~4분 · 실제경로</a></div>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=25.04325,121.50728&travelmode=walking">🚶 약 2~3분 · 실제경로</a></div>
  <div class="travelbox"><strong>🍽️ 오전~점심 자유 슬롯</strong><br><small>먹거리/쇼핑을 추가하되 공항 이동 때문에 13:30 이전 종료.</small></div>
  <div class="travelbox warn"><strong>⏰ HARD STOP · 13:30 시내 출발</strong><br>
  <span class="timechip">13:30 시먼 출발</span><span class="timechip">14:30 TPE 목표</span><span class="timechip">16:55 비행기</span><span class="timechip">20:25 한국 도착</span><br>
