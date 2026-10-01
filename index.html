@@ -97,18 +97,17 @@ document.addEventListener('keydown',function(e){
 
 </script>
 <script>
-const places=[
-{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'10:25 도착 · 입국 → ATM → EasyCard → Airport MRT'},
- {id:'taipeimain_meet',day:1,name:'타이베이 메인역 · KUMO 합류',emoji:'🤝',lat:25.0478,lng:121.5170,note:'TPE에서 공항 MRT로 A1 타이베이역 도착 → KUMO와 먼저 만나기 → 함께 시먼역 이동',url:'https://www.google.com/maps/search/?api=1&query=Taipei+Main+Station'},
+const places=[{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'10:25 도착 · 입국 → ATM → EasyCard → Airport MRT'},
+{id:'taipeimain_meet',day:1,name:'타이베이 메인역 · KUMO 합류',emoji:'🤝',lat:25.0478,lng:121.5170,note:'TPE에서 공항 MRT로 A1 타이베이역 도착 → KUMO와 먼저 만나기 → 함께 시먼역 이동',url:'https://www.google.com/maps/search/?api=1&query=Taipei+Main+Station'},
 {id:'hotel',day:1,name:'시먼딩 숙소',emoji:'🏨',lat:25.04272,lng:121.50673,note:'도착 후 짐 먼저 맡기기/풀기 · 숙소 Google Maps 링크 등록 완료'},
 {id:'beef',day:1,name:'우육면',emoji:'🍜',lat:25.0460,lng:121.5070,note:'첫 식사 · 식사 후 배부름 정도에 따라 다음 코스 결정',url:'https://maps.app.goo.gl/HLv8EfxvGcoMaAXa8'},
-{id:'real58',day:1,name:'REAL 58 주류샵',emoji:'🥃',lat:25.0418,lng:121.5074,note:'배가 차면 우육면 다음 바로 방문 · 위스키 쇼핑'},
-{id:'hotel_liquor',day:1,name:'숙소 복귀 · 술 보관',emoji:'🧳',lat:25.04272,lng:121.50673,note:'REAL58 구매품을 숙소에 두고 다시 출발'},
 {id:'carrefour',day:1,name:'까르푸',emoji:'🛒',lat:25.0385,lng:121.5065,note:'간식·우유·주류·기념품 쇼핑',url:'https://maps.app.goo.gl/i2nYKuwt7W9MAg4N6?g_st=com.iwilab.KakaoTalk.Share'},
+{id:'real58',day:1,name:'REAL 58 주류샵',emoji:'🥃',lat:25.0418,lng:121.5074,note:'까르푸 쇼핑 후 방문 · 위스키/주류 쇼핑'},
+{id:'hotel_liquor',day:1,name:'숙소 복귀 · 술 보관',emoji:'🧳',lat:25.04272,lng:121.50673,note:'까르푸 쇼핑짐 + REAL58 구매 주류를 숙소에 모두 두고 융캉제로 출발'},
 {id:'yongkang',day:1,name:'융캉제',emoji:'🛍️',lat:25.0328,lng:121.5296,note:'먹거리 + 쇼핑 · 쇼핑짐 생길 수 있음'},
 {id:'hotel_shopping',day:1,name:'숙소 복귀 · 쇼핑짐 보관',emoji:'🧳',lat:25.04272,lng:121.50673,note:'융캉제 쇼핑 후 닝샤 야시장 가기 전에 짐 내려놓기'},
 {id:'ningxia',day:1,name:'닝샤 야시장',emoji:'🌙',lat:25.0566,lng:121.5154,note:'굴전·샹창 등 야시장 먹방'},
-{id:'ningxia_wc',day:1,name:'무료 공중화장실 · 蓬萊國小 지하주차장',emoji:'🚻',lat:25.055485,lng:121.515614,note:'닝샤야시장 중간부 인근 · 寧夏路35號 지하 · 24시간 운영 주차장 내 공용/장애인 화장실 · 평양가 입구 좌표',url:'https://www.google.com/maps/search/?api=1&query=蓬萊國小地下停車場+寧夏路35號'}, 
+{id:'ningxia_wc',day:1,name:'무료 공중화장실 · 蓬萊國小 지하주차장',emoji:'🚻',lat:25.055485,lng:121.515614,note:'닝샤야시장 중간부 인근 · 寧夏路35號 지하 · 24시간 운영 주차장 내 공용/장애인 화장실 · 평양가 입구 좌표',url:'https://www.google.com/maps/search/?api=1&query=蓬萊國小地下停車場+寧夏路35號'},
 {id:'ruyi',day:1,name:'루이탕 펑리수',emoji:'🎁',lat:25.0457,lng:121.5100,note:'닝샤 야시장 이후 · 맥주집 가기 전 방문',url:'https://maps.app.goo.gl/zcSYXt8wkFPmcMCQA?g_st=ic'},
 {id:'beer',day:1,name:'시먼딩 맥주 / 꼬치',emoji:'🍺',lat:25.0441,lng:121.5075,note:'1일차 마무리'},
 
@@ -134,7 +133,7 @@ const places=[
 {id:'donut',day:1,candidate:true,name:'우유도넛',emoji:'🍩',lat:25.0450,lng:121.5110,note:'후보 · 위치 재확인',url:'https://maps.app.goo.gl/bgU5aYWEizdhXrgG8?g_st=ic'},
 {id:'ice',day:1,candidate:true,name:'삼형제빙수',emoji:'🍧',lat:25.0442,lng:121.5071,note:'망고빙수 NT$280 언급',url:'https://maps.app.goo.gl/Gvsy1GRdn7y5rADU8?g_st=ic'},
 {id:'oyster',day:1,candidate:true,name:'굴전',emoji:'🦪',lat:25.0568,lng:121.5152,note:'닝샤야시장 후보',url:'https://maps.app.goo.gl/eHWQNcKNLajm8Sba6'},
-{id:'zhajiang',day:2,name:'이란 작장면',emoji:'🍜',lat:24.7549,lng:121.7574,note:'11:00 도착 · 점심 식사 · 기존 저장 장소',url:'https://maps.app.goo.gl/EKPzUMuoF5PwgaMq7?g_st=ic'},
+{id:'zhajiang',day:2,name:'宜蘭文昌炸醬麵 · 문창 자장면',emoji:'🍜',lat:24.7579147,lng:121.7514739,note:'11:00 도착 · 文昌路37號 · 목요일 06:00~14:00 · 식사 후 Uber로 Jim & Dad\'s 이동',url:'https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts&g_ep=EgoyMDI2MDkyOC4wIPu8ASoASAFQAw%3D%3D&skid=0c496adb-7880-4fa4-afff-4b4e0a8bb135'},
 {id:'mangoice',day:2,name:'이란 망고빙수',emoji:'🥭',lat:24.7556,lng:121.7590,note:'16:30 전후 · 카발란 투어+DIY 후 해장 디저트',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
 {id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'}
 ];
@@ -166,12 +165,13 @@ L.layerGroup(koLabels.map(x=>L.marker([x.lat,x.lng],{
   })
 }))).addTo(map);
 let day=1, candidates=true, layers=[];
+let markers={};
 
 function icon(p){
  const color=p.candidate?'#8b9198':p.day===1?'#e05252':p.day===2?'#3579d6':'#2f8f69';
  return L.divIcon({className:'',html:`<div class="marker" style="background:${color}"><span>${p.emoji}</span></div>`,iconSize:[30,30],iconAnchor:[15,30]});
 }
-function clear(){layers.forEach(x=>map.removeLayer(x));layers=[]}
+function clear(){layers.forEach(x=>map.removeLayer(x));layers=[];markers={}}
 function draw(){
  clear();
  const shown=places.filter(p=>p.day===day && (!p.candidate || candidates));
@@ -181,7 +181,7 @@ function draw(){
    let html=`<div class="popup"><h3>${p.candidate?'후보 · ':p.order+'. '}${p.emoji} ${p.name}</h3><p>${p.note}</p>`;
    if(p.url) html+=`<a class="maps" target="_blank" href="${p.url}">Google Maps 열기</a>`;
    html+='</div>';
-   const m=L.marker([p.lat,p.lng],{icon:icon(p)}).bindPopup(html).addTo(map);layers.push(m);
+   const m=L.marker([p.lat,p.lng],{icon:icon(p)}).bindPopup(html).addTo(map);markers[p.id]=m;layers.push(m);
  });
  const coords=confirmed.map(p=>[p.lat,p.lng]);
  const line=L.polyline(coords,{color:day===1?'#e05252':day===2?'#3579d6':'#2f8f69',weight:5,opacity:.72,dashArray:'10 8'}).addTo(map);layers.push(line);
@@ -191,6 +191,7 @@ function draw(){
 function renderRoute(conf,cand){
  const guide = day===1 ? `
  <div class="route-title">📍 DAY 1 실제 이동 가이드</div>
+<div class="travelbox ok"><strong>✅ DAY 1 메인 동선 확정</strong><br><small>우육면 → <b>까르푸 → REAL58 → HOTEL PURI(짐 보관) → 융캉제</b>. Monga/아종면선은 우육면 직후 선택 후보이며 선택 후에도 까르푸로 합류.</small></div>
 <div class="travelbox ok"><strong>✈️ DAY 1 첫 이동 · KUMO 먼저 만나기</strong><br>
  <small><b>TPE 공항 → 공항 MRT → A1 타이베이 메인역 → KUMO 합류 → 함께 시먼역 → HOTEL PURI</b><br>
  공항에서 바로 시먼으로 가지 않고, 타이베이 메인역을 첫 합류 지점으로 사용.</small>
@@ -221,8 +222,8 @@ function renderRoute(conf,cand){
  day===2 ? `
  <div class="route-title">🍺🥃 DAY 2 · 이란 양조장 데이</div>
  <div class="travelbox ok"><strong>10:30 · 이란현 도착</strong><br><small>타이베이에서 이란으로 이동 완료. 11:00 식사 장소 도착을 목표로 이동.</small></div>
- <div class="travelbox"><strong>11:00 · 이란 작장면</strong><br><small>점심 식사. 식사 후 Uber 호출 → Jim & Dad's Brewing Company로 이동.</small>
- <a class="navgo" target="_blank" href="https://maps.app.goo.gl/EKPzUMuoF5PwgaMq7?g_st=ic">🍜 작장면 지도</a></div>
+ <div class="travelbox"><strong>11:00 · 宜蘭文昌炸醬麵</strong><br><small>文昌路37號에서 점심 식사. 목요일 06:00~14:00 영업 확인. 식사 후 Uber 호출 → Jim & Dad's Brewing Company로 이동.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts&g_ep=EgoyMDI2MDkyOC4wIPu8ASoASAFQAw%3D%3D&skid=0c496adb-7880-4fa4-afff-4b4e0a8bb135">🍜 문창 자장면 지도</a></div>
  <div class="travelbox"><strong>11:40~12:00 · Jim & Dad's 도착</strong><br><small>양조장 구경/맥주. 목요일 공식 영업시간 11:00~18:00. 약 13:00에 나와 Kavalan으로 이동.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan">🍺 Jim & Dad's</a></div>
  <div class="travelbox"><strong>13:00 · Jim & Dad's → Kavalan</strong><br><small>두 양조장 모두 Yuanshan Township에 있어 차량 이동. 14:00 투어보다 여유 있게 도착해 체크/대기.</small>
@@ -245,12 +246,13 @@ function renderRoute(conf,cand){
  <span class="timechip">13:30 시먼 출발</span><span class="timechip">14:30 TPE 목표</span><span class="timechip">16:55 비행기</span><span class="timechip">20:25 한국 도착</span><br>
  <small>숙소에서 짐을 찾고 공항으로 이동. 약 1시간 이동 버퍼 기준.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Ximen+Station+Taipei&destination=Taiwan+Taoyuan+International+Airport&travelmode=transit">🚆 시먼→TPE 길찾기</a></div>` : '';
- const branch=day===1?`<div class="route-title">🍽️ 첫 식사 포만감 분기</div><div class="stop" style="min-width:100%;border-left:5px solid #d9a22e"><b>우육면 → 배 상태 체크</b><small>배가 차면 → REAL58<br>배가 안 차면 → Monga 지파이 → 다시 체크<br>그래도 안 차면 → 아종면선 작은 사이즈 → REAL58</small></div>`:'';
+ const branch=day===1?`<div class="route-title">🍽️ 첫 식사 포만감 분기</div><div class="stop" style="min-width:100%;border-left:5px solid #d9a22e"><b>우육면 → 배 상태 체크</b><small>배가 차면 → <b>까르푸</b><br>배가 안 차면 → Monga 지파이 → 다시 체크<br>그래도 안 차면 → 아종면선 작은 사이즈<br><b>어느 분기를 선택해도 다음 메인 코스는 까르푸 → REAL58 → 숙소</b></small></div>`:'';
  document.getElementById('route').innerHTML=
  `<div class="route-title">DAY ${day} 기본 동선</div><div class="route">${conf.map((p,i)=>`<div class="stop" data-place="${p.id}" tabindex="0" role="button" aria-label="${p.name} 지도에서 보기"><b>${i+1}. ${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join('')}</div>`+
  guide+
  branch+
- `<div class="route-title">회색 후보 · 다음에 고르기</div><div class="route">${cand.length?cand.map(p=>`<div class="stop candidate-card"><b>${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join(''):'<div class="stop">후보 핀이 꺼져 있습니다.</div>'}</div>`;
+ `<div class="route-title">회색 후보 · 다음에 고르기</div><div class="route">${cand.length?cand.map(p=>`<div class="stop candidate-card" data-place="${p.id}" tabindex="0" role="button" aria-label="${p.name} 지도에서 보기"><b>${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join(''):'<div class="stop">후보 핀이 꺼져 있습니다.</div>'}</div>`;
+ setTimeout(wireRouteCards,0);
 }
 document.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{
  day=+b.dataset.day;
