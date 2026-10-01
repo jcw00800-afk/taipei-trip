@@ -38,6 +38,10 @@ h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
 .stop-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
 .stop-mapbtn,.stop-navbtn{border:0;border-radius:8px;padding:6px 8px;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none}
 .stop-mapbtn{background:#eceff1;color:#263238}.stop-navbtn{background:#1769aa;color:#fff}
+
+.candidate[data-place]{cursor:pointer}
+.candidate[data-place]:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(0,0,0,.10)}
+.candidate[data-place].map-active{outline:3px solid #8a8f98;box-shadow:0 0 0 5px rgba(120,125,135,.14)}
 </style>
 </head>
 <body>
@@ -57,7 +61,7 @@ h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
 <div class="panel">
 <div class="legend"><span><i class="dot" style="background:#e05252"></i>DAY1</span><span><i class="dot" style="background:#3579d6"></i>DAY2</span><span><i class="dot" style="background:#2f8f69"></i>DAY3</span><span><i class="dot" style="background:#8b9198"></i>미확정 후보</span></div>
 <div id="route"></div>
-<div class="note">※ 숙소는 HOTEL PURI XIMEN BRANCH(成都路27巷6號)로 확정 반영했습니다. 아래 동선 카드는 터치하면 해당 핀으로 지도 이동·확대되며, 길찾기 버튼은 Google Maps를 엽니다. 숙소 인접 구간은 주소·장소 좌표로 거리 범위를 보정했으며, 실제 보행시간은 신호/골목에 따라 달라질 수 있어 Google Maps 도보 버튼을 함께 제공합니다. 닝샤 화장실은 공식 위치와 전달받은 2023년 방문기의 현장 접근법을 함께 반영했습니다. DAY2는 10:30 이란 도착 → 11:00 작장면 → Jim & Dad's → 14:00 Kavalan 투어+DIY → 16:30 망고빙수 → 18:00~18:30 타이베이 → 새우만두 일정으로 확정 반영했습니다. 회색 핀은 다음 단계에서 실제 영업정보·거리·메뉴를 비교해 선택/삭제할 후보입니다. 지도 배경은 API 키가 필요 없는 OpenStreetMap을 사용하며, 주요 여행 지역은 한글 라벨을 추가했습니다.</div>
+<div class="note">※ 숙소는 HOTEL PURI XIMEN BRANCH(成都路27巷6號)로 확정 반영했습니다. 아래 메인 동선 카드와 회색 후보 카드는 모두 터치하면 해당 핀으로 지도 이동·확대되며, 길찾기 버튼은 Google Maps를 엽니다. 숙소 인접 구간은 주소·장소 좌표로 거리 범위를 보정했으며, 실제 보행시간은 신호/골목에 따라 달라질 수 있어 Google Maps 도보 버튼을 함께 제공합니다. 닝샤 화장실은 공식 위치와 전달받은 2023년 방문기의 현장 접근법을 함께 반영했습니다. DAY2는 10:30 이란 도착 → 11:00 작장면 → Jim & Dad's → 14:00 Kavalan 투어+DIY → 16:30 망고빙수 → 18:00~18:30 타이베이 → 새우만두 일정으로 확정 반영했습니다. 회색 핀은 다음 단계에서 실제 영업정보·거리·메뉴를 비교해 선택/삭제할 후보입니다. 지도 배경은 API 키가 필요 없는 OpenStreetMap을 사용하며, 주요 여행 지역은 한글 라벨을 추가했습니다.</div>
 <div id="appendix" class="appendix">
  <div class="route-title">✈️ 부록 · TPE 도착 직후 가이드</div>
  <div class="travelbox ok">
@@ -75,15 +79,31 @@ h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
 </div>
 
 </div></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+// v11: delegated map-focus handler. Works for main itinerary AND dynamically rendered grey candidates.
+document.addEventListener('click',function(e){
+  const card=e.target.closest('[data-place]');
+  if(!card || e.target.closest('a,button')) return;
+  const id=card.dataset.place;
+  if(id) focusPlace(id);
+});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter' && e.key!==' ') return;
+  const card=e.target.closest('[data-place]');
+  if(!card || e.target.closest('a,button')) return;
+  e.preventDefault();
+  if(card.dataset.place) focusPlace(card.dataset.place);
+});
+
+</script>
 <script>
 const places=[
 {id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'10:25 도착 · 입국 → ATM → EasyCard → Airport MRT'},
+ {id:'taipeimain_meet',day:1,name:'타이베이 메인역 · KUMO 합류',emoji:'🤝',lat:25.0478,lng:121.5170,note:'TPE에서 공항 MRT로 A1 타이베이역 도착 → KUMO와 먼저 만나기 → 함께 시먼역 이동',url:'https://www.google.com/maps/search/?api=1&query=Taipei+Main+Station'},
 {id:'hotel',day:1,name:'시먼딩 숙소',emoji:'🏨',lat:25.04272,lng:121.50673,note:'도착 후 짐 먼저 맡기기/풀기 · 숙소 Google Maps 링크 등록 완료'},
 {id:'beef',day:1,name:'우육면',emoji:'🍜',lat:25.0460,lng:121.5070,note:'첫 식사 · 식사 후 배부름 정도에 따라 다음 코스 결정',url:'https://maps.app.goo.gl/HLv8EfxvGcoMaAXa8'},
 {id:'real58',day:1,name:'REAL 58 주류샵',emoji:'🥃',lat:25.0418,lng:121.5074,note:'배가 차면 우육면 다음 바로 방문 · 위스키 쇼핑'},
 {id:'hotel_liquor',day:1,name:'숙소 복귀 · 술 보관',emoji:'🧳',lat:25.04272,lng:121.50673,note:'REAL58 구매품을 숙소에 두고 다시 출발'},
-{id:'redhouse',day:1,name:'서문홍루',emoji:'🏮',lat:25.0420,lng:121.5069,note:'시먼딩 산책'},
 {id:'carrefour',day:1,name:'까르푸',emoji:'🛒',lat:25.0385,lng:121.5065,note:'간식·우유·주류·기념품 쇼핑',url:'https://maps.app.goo.gl/i2nYKuwt7W9MAg4N6?g_st=com.iwilab.KakaoTalk.Share'},
 {id:'yongkang',day:1,name:'융캉제',emoji:'🛍️',lat:25.0328,lng:121.5296,note:'먹거리 + 쇼핑 · 쇼핑짐 생길 수 있음'},
 {id:'hotel_shopping',day:1,name:'숙소 복귀 · 쇼핑짐 보관',emoji:'🧳',lat:25.04272,lng:121.50673,note:'융캉제 쇼핑 후 닝샤 야시장 가기 전에 짐 내려놓기'},
@@ -171,15 +191,20 @@ function draw(){
 function renderRoute(conf,cand){
  const guide = day===1 ? `
  <div class="route-title">📍 DAY 1 실제 이동 가이드</div>
+<div class="travelbox ok"><strong>✈️ DAY 1 첫 이동 · KUMO 먼저 만나기</strong><br>
+ <small><b>TPE 공항 → 공항 MRT → A1 타이베이 메인역 → KUMO 합류 → 함께 시먼역 → HOTEL PURI</b><br>
+ 공항에서 바로 시먼으로 가지 않고, 타이베이 메인역을 첫 합류 지점으로 사용.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Taoyuan+International+Airport&destination=Taipei+Main+Station&travelmode=transit">🚆 TPE→타이베이역</a>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Taipei+Main+Station&destination=Ximen+Station&travelmode=transit">🤝 합류 후→시먼역</a></div>
  <div class="travelbox"><strong>🏨 숙소 확정 · HOTEL PURI XIMEN</strong><br><small>台北市萬華區成都路27巷6號 · 시먼역 도보 약 3~5분</small>
- <a class="navgo" target="_blank" href="https://maps.app.goo.gl/HZCt2dhCswrRXdXo9">숙소 Google Maps</a></div><div class="travelbox ok"><strong>🧳 DAY 1 짐 처리 동선</strong><br><small>까르푸 쇼핑 → REAL58 술 구매 → HOTEL PURI에 쇼핑짐·술 모두 보관 → 빈손으로 융캉제 이동.</small></div>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/HZCt2dhCswrRXdXo9">숙소 Google Maps</a></div><div class="travelbox ok"><strong>🧳 DAY 1 핵심 쇼핑·짐 동선</strong><br><small>우육면 식사 → 까르푸 쇼핑 → REAL58 술 구매 → HOTEL PURI에 쇼핑짐·술 모두 보관 → 빈손으로 융캉제 이동.</small></div>
  <div class="travelbox ok"><strong>✈️ 08:35 한국 출발 → 10:25 TPE 도착</strong><br><small>입국심사·수하물 → ATM → EasyCard → Airport MRT → Taipei Main Station → MRT BL선 → Ximen → 숙소</small><br>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=Ximen+Station+Taipei&travelmode=transit">🚆 공항→시먼 길찾기</a></div>
  <div class="travelbox"><strong>🏨 HOTEL PURI XIMEN → 🍜 우육면</strong><br><small>台北市萬華區成都路27巷6號. 시먼역 도보 약 3~5분권. 우육면까지는 현장 Google Maps 도보 경로 기준으로 이동.</small>
  <a class="navgo" target="_blank" href="https://maps.app.goo.gl/HZCt2dhCswrRXdXo9">🏨 HOTEL PURI</a>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=25.0460,121.5070&travelmode=walking">🚶 실제 도보경로 열기</a></div>
- <div class="travelbox"><strong>🍜 우육면 → 🥃 REAL58</strong><br><small>시먼딩 권역 내 약 5~10분 도보. 배가 안 차면 Monga/아종면선 분기 후 REAL58.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=25.0460,121.5070&destination=25.0418,121.5074&travelmode=walking">🚶 실제 도보경로 열기</a></div>
+ <div class="travelbox"><strong>🍜 우육면 → 🛒 까르푸</strong><br><small>우육면 식사 후 메인 동선은 바로 까르푸. 포만감 분기(Monga/아종면선)를 선택했다면 해당 식사 후 까르푸로 합류.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=Carrefour+Guilin+Store+Taipei&travelmode=walking">🚶 까르푸 길찾기</a></div>
  <div class="travelbox"><strong>🥃 REAL58 → 🧳 HOTEL PURI</strong><br><small>두 장소는 같은 시먼 남쪽 권역. 직선거리 약 120m 수준이며 실제 골목 도보는 약 2~4분 예상 · 까르푸 쇼핑짐과 REAL58에서 산 술을 한 번에 숙소에 내려놓기.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=REAL+58%25+LIQUOR+STORE+Taipei&destination=HOTEL+PURI+XIMEN+BRANCH&travelmode=walking">🚶 REAL58→숙소</a></div>
  <div class="travelbox"><strong>🏨 숙소 → 🛍️ 융캉제</strong><br><small>도보만 고집하기보다 MRT 이용 권장. 시먼→동먼 이동 후 융캉제 도보 진입.</small>
@@ -243,10 +268,10 @@ function focusPlace(id){
  map.flyTo([p.lat,p.lng], Math.max(map.getZoom(),16), {duration:.65});
  const m=markers && markers[id];
  if(m){ setTimeout(()=>m.openPopup(),500); }
- document.querySelectorAll('.route .stop').forEach(el=>el.classList.toggle('map-active',el.dataset.place===id));
+ document.querySelectorAll('.route .stop, .candidate').forEach(el=>el.classList.toggle('map-active',el.dataset.place===id));
 }
 function wireRouteCards(){
- document.querySelectorAll('.route .stop[data-place]').forEach(el=>{
+ document.querySelectorAll('.route .stop[data-place], .candidate[data-place], .candidates [data-place]').forEach(el=>{
    el.onclick=(e)=>{
      if(e.target.closest('a,button')) return;
      focusPlace(el.dataset.place);
@@ -281,5 +306,21 @@ document.getElementById('appendixBtn').onclick=()=>{
  document.getElementById('appendixBtn').classList.toggle('active',showing);
 };
 draw();
+
+// v11: delegated map-focus handler. Works for main itinerary AND dynamically rendered grey candidates.
+document.addEventListener('click',function(e){
+  const card=e.target.closest('[data-place]');
+  if(!card || e.target.closest('a,button')) return;
+  const id=card.dataset.place;
+  if(id) focusPlace(id);
+});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter' && e.key!==' ') return;
+  const card=e.target.closest('[data-place]');
+  if(!card || e.target.closest('a,button')) return;
+  e.preventDefault();
+  if(card.dataset.place) focusPlace(card.dataset.place);
+});
+
 </script>
 </body></html>
