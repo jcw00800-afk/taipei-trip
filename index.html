@@ -31,6 +31,13 @@ h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
 .warn{border-left:5px solid #e05252;background:#fff8f7}.ok{border-left:5px solid #2f8f69}.appendix{display:none}.appendix.show{display:block}.routeview.hide{display:none}
 .step{display:grid;grid-template-columns:34px 1fr;gap:9px;margin:11px 0}.stepnum{width:30px;height:30px;border-radius:50%;background:#17202a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
 @media(min-width:900px){#map{height:68vh}.layout{display:grid;grid-template-columns:1fr 390px}.panel{height:68vh;overflow:auto;padding-top:18px}}
+
+.route .stop{cursor:pointer;transition:.18s ease;position:relative}
+.route .stop:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(0,0,0,.10)}
+.route .stop.map-active{outline:3px solid #f0a000;box-shadow:0 0 0 5px rgba(240,160,0,.12)}
+.stop-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.stop-mapbtn,.stop-navbtn{border:0;border-radius:8px;padding:6px 8px;font-size:11px;font-weight:800;cursor:pointer;text-decoration:none}
+.stop-mapbtn{background:#eceff1;color:#263238}.stop-navbtn{background:#1769aa;color:#fff}
 </style>
 </head>
 <body>
@@ -50,7 +57,7 @@ h1{font-size:19px;margin:0 0 3px}.sub{font-size:12px;color:#6f747a}
 <div class="panel">
 <div class="legend"><span><i class="dot" style="background:#e05252"></i>DAY1</span><span><i class="dot" style="background:#3579d6"></i>DAY2</span><span><i class="dot" style="background:#2f8f69"></i>DAY3</span><span><i class="dot" style="background:#8b9198"></i>미확정 후보</span></div>
 <div id="route"></div>
-<div class="note">※ 숙소는 HOTEL PURI XIMEN BRANCH(成都路27巷6號)로 확정 반영했습니다. 숙소 인접 구간은 주소·장소 좌표로 거리 범위를 보정했으며, 실제 보행시간은 신호/골목에 따라 달라질 수 있어 Google Maps 도보 버튼을 함께 제공합니다. 닝샤 화장실은 공식 위치와 전달받은 2023년 방문기의 현장 접근법을 함께 반영했습니다. DAY2는 14:00 Kavalan 투어 기준으로 재구성했습니다. 회색 핀은 다음 단계에서 실제 영업정보·거리·메뉴를 비교해 선택/삭제할 후보입니다. 지도 배경은 API 키가 필요 없는 OpenStreetMap을 사용하며, 주요 여행 지역은 한글 라벨을 추가했습니다.</div>
+<div class="note">※ 숙소는 HOTEL PURI XIMEN BRANCH(成都路27巷6號)로 확정 반영했습니다. 아래 동선 카드는 터치하면 해당 핀으로 지도 이동·확대되며, 길찾기 버튼은 Google Maps를 엽니다. 숙소 인접 구간은 주소·장소 좌표로 거리 범위를 보정했으며, 실제 보행시간은 신호/골목에 따라 달라질 수 있어 Google Maps 도보 버튼을 함께 제공합니다. 닝샤 화장실은 공식 위치와 전달받은 2023년 방문기의 현장 접근법을 함께 반영했습니다. DAY2는 10:30 이란 도착 → 11:00 작장면 → Jim & Dad's → 14:00 Kavalan 투어+DIY → 16:30 망고빙수 → 18:00~18:30 타이베이 → 새우만두 일정으로 확정 반영했습니다. 회색 핀은 다음 단계에서 실제 영업정보·거리·메뉴를 비교해 선택/삭제할 후보입니다. 지도 배경은 API 키가 필요 없는 OpenStreetMap을 사용하며, 주요 여행 지역은 한글 라벨을 추가했습니다.</div>
 <div id="appendix" class="appendix">
  <div class="route-title">✈️ 부록 · TPE 도착 직후 가이드</div>
  <div class="travelbox ok">
@@ -87,11 +94,13 @@ const places=[
 
 {id:'breakfast',day:2,name:'또우장 + 요우티아오',emoji:'🥣',lat:25.0455,lng:121.5140,note:'시간 여유 있을 때 · 아침 후보',url:'https://maps.app.goo.gl/YCyC6zaQzEuYi5Ar8'},
 {id:'yilan',day:2,name:'이란역',emoji:'🚉',lat:24.7544,lng:121.7581,note:'카발란 이동 거점'},
+ {id:'jimdad',day:2,name:"Jim & Dad's Brewing Company",emoji:'🍺',lat:24.7187,lng:121.6918,note:'11:40~12:00 도착 → 약 13:00 출발 · 목요일 11:00~18:00',url:'https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan'},
 {id:'kavalan',day:2,name:'Kavalan Distillery',emoji:'🥃',lat:24.6947,lng:121.6917,note:'증류소 관람 · 시음 · DIY 블렌딩 · 아이스크림 · Bottle Shop'},
 {id:'yilan2',day:2,name:'이란역 복귀',emoji:'🚕',lat:24.7547,lng:121.7584,note:'식사 후 타이베이 이동'},
 {id:'taipei',day:2,name:'타이베이/시먼딩',emoji:'🍺',lat:25.0440,lng:121.5076,note:'2일차 저녁 · 미확정'},
 
 {id:'day3hotel',day:3,name:'시먼딩 숙소',emoji:'🏨',lat:25.04272,lng:121.50673,note:'마지막 날 아침 출발 · 숙소 Google Maps 링크 등록 완료'},
+ {id:'shrimpdumpling',day:2,name:'타이베이 메인역 · 새우만두',emoji:'🥟',lat:25.0463,lng:121.5175,note:'18:00~18:30 타이베이 복귀 후 저녁 · 기존 저장 후보',url:'https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic'},
 {id:'day3aychung',day:3,name:'아종면선',emoji:'🍜',lat:25.04325,lng:121.50728,note:'마지막 날 아침 · 곱창국수',url:'https://maps.app.goo.gl/BuWUjwNzEPTeG6Pa8?g_st=ic'},
 {id:'day3free',day:3,name:'오전~점심 추가 일정',emoji:'🍽️',lat:25.0460,lng:121.5100,note:'추후 먹거리/쇼핑 확정 · 13:30 이전 종료'},
 {id:'day3pickup',day:3,name:'HOTEL PURI · 짐 픽업',emoji:'🧳',lat:25.04272,lng:121.50673,note:'공항 이동 전 짐 회수'},
@@ -105,11 +114,12 @@ const places=[
 {id:'donut',day:1,candidate:true,name:'우유도넛',emoji:'🍩',lat:25.0450,lng:121.5110,note:'후보 · 위치 재확인',url:'https://maps.app.goo.gl/bgU5aYWEizdhXrgG8?g_st=ic'},
 {id:'ice',day:1,candidate:true,name:'삼형제빙수',emoji:'🍧',lat:25.0442,lng:121.5071,note:'망고빙수 NT$280 언급',url:'https://maps.app.goo.gl/Gvsy1GRdn7y5rADU8?g_st=ic'},
 {id:'oyster',day:1,candidate:true,name:'굴전',emoji:'🦪',lat:25.0568,lng:121.5152,note:'닝샤야시장 후보',url:'https://maps.app.goo.gl/eHWQNcKNLajm8Sba6'},
-{id:'sesame',day:2,name:'大麵章 대면장 · 마장면',emoji:'🍜',lat:24.7572,lng:121.7557,note:'투어 후 마장면 · 이란역 도보 약 5분 · 목요일 15:30~24:00'},
-{id:'milkice',day:2,name:'이란 우유빙수',emoji:'🍧',lat:24.7556,lng:121.7590,note:'마장면 다음 디저트 · 기존 저장한 Google Maps 장소 · 영업시간 현장 재확인',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
+{id:'zhajiang',day:2,name:'이란 작장면',emoji:'🍜',lat:24.7549,lng:121.7574,note:'11:00 도착 · 점심 식사 · 기존 저장 장소',url:'https://maps.app.goo.gl/EKPzUMuoF5PwgaMq7?g_st=ic'},
+{id:'mangoice',day:2,name:'이란 망고빙수',emoji:'🥭',lat:24.7556,lng:121.7590,note:'16:30 전후 · 카발란 투어+DIY 후 해장 디저트',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
 {id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'}
 ];
 
+const markers={};
 const map=L.map('map',{zoomControl:false}).setView([25.045,121.512],14);
 L.control.zoom({position:'bottomright'}).addTo(map);
 // API 키가 필요 없는 OpenStreetMap 배경지도 + 주요 지역 한글 라벨
@@ -162,7 +172,7 @@ function renderRoute(conf,cand){
  const guide = day===1 ? `
  <div class="route-title">📍 DAY 1 실제 이동 가이드</div>
  <div class="travelbox"><strong>🏨 숙소 확정 · HOTEL PURI XIMEN</strong><br><small>台北市萬華區成都路27巷6號 · 시먼역 도보 약 3~5분</small>
- <a class="navgo" target="_blank" href="https://maps.app.goo.gl/HZCt2dhCswrRXdXo9">숙소 Google Maps</a></div>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/HZCt2dhCswrRXdXo9">숙소 Google Maps</a></div><div class="travelbox ok"><strong>🧳 DAY 1 짐 처리 동선</strong><br><small>까르푸 쇼핑 → REAL58 술 구매 → HOTEL PURI에 쇼핑짐·술 모두 보관 → 빈손으로 융캉제 이동.</small></div>
  <div class="travelbox ok"><strong>✈️ 08:35 한국 출발 → 10:25 TPE 도착</strong><br><small>입국심사·수하물 → ATM → EasyCard → Airport MRT → Taipei Main Station → MRT BL선 → Ximen → 숙소</small><br>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=Ximen+Station+Taipei&travelmode=transit">🚆 공항→시먼 길찾기</a></div>
  <div class="travelbox"><strong>🏨 HOTEL PURI XIMEN → 🍜 우육면</strong><br><small>台北市萬華區成都路27巷6號. 시먼역 도보 약 3~5분권. 우육면까지는 현장 Google Maps 도보 경로 기준으로 이동.</small>
@@ -170,7 +180,7 @@ function renderRoute(conf,cand){
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=25.0460,121.5070&travelmode=walking">🚶 실제 도보경로 열기</a></div>
  <div class="travelbox"><strong>🍜 우육면 → 🥃 REAL58</strong><br><small>시먼딩 권역 내 약 5~10분 도보. 배가 안 차면 Monga/아종면선 분기 후 REAL58.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=25.0460,121.5070&destination=25.0418,121.5074&travelmode=walking">🚶 실제 도보경로 열기</a></div>
- <div class="travelbox"><strong>🥃 REAL58 → 🧳 HOTEL PURI</strong><br><small>두 장소는 같은 시먼 남쪽 권역. 직선거리 약 120m 수준이며 실제 골목 도보는 약 2~4분 예상 · 구매한 술을 바로 숙소에 내려놓기.</small>
+ <div class="travelbox"><strong>🥃 REAL58 → 🧳 HOTEL PURI</strong><br><small>두 장소는 같은 시먼 남쪽 권역. 직선거리 약 120m 수준이며 실제 골목 도보는 약 2~4분 예상 · 까르푸 쇼핑짐과 REAL58에서 산 술을 한 번에 숙소에 내려놓기.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=REAL+58%25+LIQUOR+STORE+Taipei&destination=HOTEL+PURI+XIMEN+BRANCH&travelmode=walking">🚶 REAL58→숙소</a></div>
  <div class="travelbox"><strong>🏨 숙소 → 🛍️ 융캉제</strong><br><small>도보만 고집하기보다 MRT 이용 권장. 시먼→동먼 이동 후 융캉제 도보 진입.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Ximen+Station+Taipei&destination=Yongkang+Street+Taipei&travelmode=transit">🚇 시먼→융캉제</a></div>
@@ -184,17 +194,22 @@ function renderRoute(conf,cand){
  <a class="navgo" target="_blank" href="https://www.google.com/maps/search/?api=1&query=蓬萊國小地下停車場+寧夏路35號">🚻 화장실 위치 열기</a></div>
  <div class="travelbox"><strong>🌙 닝샤 → 🎁 루이탕 → 🍺 맥주집</strong><br><small>닝샤에서 시먼권으로 복귀하며 루이탕을 들른 뒤 맥주/꼬치로 마무리. 각 구간은 Google Maps 도보 버튼으로 현장 경로 확인.</small></div>` :
  day===2 ? `
- <div class="route-title">🥃 DAY 2 · KAVALAN 14:00 고정 일정</div>
- <div class="travelbox ok"><strong>오전 · 시먼 → 이란 이동</strong><br><small>14:00 투어에 맞춰 이란에 여유 있게 도착. 이란역/버스터미널에서 카발란은 택시 약 15~20분을 기본 버퍼로 잡기.</small></div>
- <div class="travelbox"><strong>13:20 전후 · 이란 시내 → Kavalan</strong><br><small>택시 이동 → 13:40 전후 도착 목표 → 체크/대기.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Yilan+Station&destination=Kavalan+Distillery&travelmode=driving">🚕 이란역→카발란</a></div>
- <div class="travelbox"><strong>14:00 · 증류소 투어</strong><br><small>투어·시음/체험 일정 진행. 15:30~16:00 출발 예상.</small></div>
- <div class="travelbox"><strong>15:30~16:00 · Kavalan → 이란 시내</strong><br><small>택시 약 15~20분 버퍼 → 16:00~16:20 시내 도착 예상.</small></div>
- <div class="travelbox"><strong>16:10~17:00 · 大麵章 대면장 마장면</strong><br><small>기존 一香은 16:30 마감이라 제외. 대면장은 목요일 15:30~24:00, 이란역 도보 약 5분.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/search/?api=1&query=大麵章+宜蘭+新民路24號">🍜 대면장 지도</a></div>
- <div class="travelbox"><strong>17:00 전후 · 우유빙수 → 이란역/터미널</strong><br><small>기존 저장 장소를 유지. 식사 후 디저트 → 타이베이 복귀.</small></div>
- <div class="travelbox"><strong>저녁 · 이란 → 타이베이 → 시먼</strong><br><small>1571 버스 등 귀환편 선택. 1571은 이란에서 타이베이 신이구 방향으로 운행.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Yilan+Station&destination=Ximen+Station+Taipei&travelmode=transit">🚌 이란→시먼 길찾기</a></div>` :
+ <div class="route-title">🍺🥃 DAY 2 · 이란 양조장 데이</div>
+ <div class="travelbox ok"><strong>10:30 · 이란현 도착</strong><br><small>타이베이에서 이란으로 이동 완료. 11:00 식사 장소 도착을 목표로 이동.</small></div>
+ <div class="travelbox"><strong>11:00 · 이란 작장면</strong><br><small>점심 식사. 식사 후 Uber 호출 → Jim & Dad's Brewing Company로 이동.</small>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/EKPzUMuoF5PwgaMq7?g_st=ic">🍜 작장면 지도</a></div>
+ <div class="travelbox"><strong>11:40~12:00 · Jim & Dad's 도착</strong><br><small>양조장 구경/맥주. 목요일 공식 영업시간 11:00~18:00. 약 13:00에 나와 Kavalan으로 이동.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan">🍺 Jim & Dad's</a></div>
+ <div class="travelbox"><strong>13:00 · Jim & Dad's → Kavalan</strong><br><small>두 양조장 모두 Yuanshan Township에 있어 차량 이동. 14:00 투어보다 여유 있게 도착해 체크/대기.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Jim+%26+Dad%27s+Brewing+Company+Yilan&destination=Kavalan+Distillery&travelmode=driving">🚕 양조장→카발란</a></div>
+ <div class="travelbox ok"><strong>14:00~16:00 · Kavalan 투어 + DIY</strong><br><small>14:00 투어 시작 → DIY까지 모두 진행 → 약 16:00 종료 예상. 카발란 관광공장 공식 운영시간은 09:00~18:00.</small></div>
+ <div class="travelbox"><strong>16:00 · Kavalan → 이란 시내</strong><br><small>Uber/택시로 이동 → 약 16:30 이란 시내 복귀 목표.</small></div>
+ <div class="travelbox"><strong>16:30 · 🥭 해장 망고빙수</strong><br><small>카발란 일정 후 디저트. 기존 저장한 빙수 장소를 지도에 유지.</small>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic">🥭 망고빙수 지도</a></div>
+ <div class="travelbox"><strong>이란 → 타이베이</strong><br><small>빙수 후 바로 복귀. 계획상 18:00~18:30 타이베이 도착 목표. 실제 교통상황에 따라 변동 가능.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Yilan+Station&destination=Taipei+Main+Station&travelmode=transit">🚌/🚆 타이베이 복귀</a></div>
+ <div class="travelbox"><strong>18:00~18:30 이후 · 🥟 새우만두 저녁</strong><br><small>타이베이 메인역 근처에서 새우만두 + 작장면 후보. 이란에서 작장면을 먹으므로 현장에서는 새우만두 중심으로 주문하는 흐름.</small>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic">🥟 새우만두 지도</a></div>` :
  day===3 ? `
  <div class="route-title">📍 DAY 3 귀국일 가이드</div>
  <div class="travelbox"><strong>🏨 HOTEL PURI → 🍜 아종면선</strong><br><small>호텔과 아종면선은 직선거리 약 80m 수준. 골목/횡단을 포함해 도보 약 2~4분 예상.</small>
@@ -207,7 +222,7 @@ function renderRoute(conf,cand){
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Ximen+Station+Taipei&destination=Taiwan+Taoyuan+International+Airport&travelmode=transit">🚆 시먼→TPE 길찾기</a></div>` : '';
  const branch=day===1?`<div class="route-title">🍽️ 첫 식사 포만감 분기</div><div class="stop" style="min-width:100%;border-left:5px solid #d9a22e"><b>우육면 → 배 상태 체크</b><small>배가 차면 → REAL58<br>배가 안 차면 → Monga 지파이 → 다시 체크<br>그래도 안 차면 → 아종면선 작은 사이즈 → REAL58</small></div>`:'';
  document.getElementById('route').innerHTML=
- `<div class="route-title">DAY ${day} 기본 동선</div><div class="route">${conf.map((p,i)=>`<div class="stop"><b>${i+1}. ${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join('')}</div>`+
+ `<div class="route-title">DAY ${day} 기본 동선</div><div class="route">${conf.map((p,i)=>`<div class="stop" data-place="${p.id}" tabindex="0" role="button" aria-label="${p.name} 지도에서 보기"><b>${i+1}. ${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join('')}</div>`+
  guide+
  branch+
  `<div class="route-title">회색 후보 · 다음에 고르기</div><div class="route">${cand.length?cand.map(p=>`<div class="stop candidate-card"><b>${p.emoji} ${p.name}</b><small>${p.note}</small></div>`).join(''):'<div class="stop">후보 핀이 꺼져 있습니다.</div>'}</div>`;
@@ -221,6 +236,43 @@ document.getElementById('candidateBtn').onclick=e=>{
  candidates=!candidates;e.currentTarget.classList.toggle('active',candidates);
  e.currentTarget.textContent=candidates?'● 회색 후보 ON':'○ 회색 후보 OFF';draw();
 };
+
+function focusPlace(id){
+ const p=places.find(x=>x.id===id);
+ if(!p) return;
+ map.flyTo([p.lat,p.lng], Math.max(map.getZoom(),16), {duration:.65});
+ const m=markers && markers[id];
+ if(m){ setTimeout(()=>m.openPopup(),500); }
+ document.querySelectorAll('.route .stop').forEach(el=>el.classList.toggle('map-active',el.dataset.place===id));
+}
+function wireRouteCards(){
+ document.querySelectorAll('.route .stop[data-place]').forEach(el=>{
+   el.onclick=(e)=>{
+     if(e.target.closest('a,button')) return;
+     focusPlace(el.dataset.place);
+   };
+   el.onkeydown=(e)=>{
+     if(e.key==='Enter'||e.key===' '){e.preventDefault();focusPlace(el.dataset.place);}
+   };
+   if(!el.querySelector('.stop-actions')){
+     const p=places.find(x=>x.id===el.dataset.place);
+     if(!p) return;
+     const box=document.createElement('div'); box.className='stop-actions';
+     const b=document.createElement('button'); b.className='stop-mapbtn'; b.type='button'; b.textContent='📍 지도보기';
+     b.onclick=(e)=>{e.stopPropagation();focusPlace(p.id)}; box.appendChild(b);
+     const a=document.createElement('a'); a.className='stop-navbtn'; a.target='_blank'; a.rel='noopener';
+     a.textContent='🧭 길찾기';
+     a.href=p.url || `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&travelmode=walking`;
+     a.onclick=(e)=>e.stopPropagation(); box.appendChild(a);
+     el.appendChild(box);
+   }
+ });
+}
+
+
+const routeObserver=new MutationObserver(()=>wireRouteCards());
+routeObserver.observe(document.getElementById('route'),{childList:true,subtree:true});
+
 document.getElementById('appendixBtn').onclick=()=>{
  const a=document.getElementById('appendix');
  const r=document.getElementById('route');
