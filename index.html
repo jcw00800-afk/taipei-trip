@@ -97,7 +97,8 @@ document.addEventListener('keydown',function(e){
 
 </script>
 <script>
-const places=[{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'10:25 도착 · 입국 → ATM → EasyCard → Airport MRT'},
+const places=[
+{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'10:25 도착 · 입국 → ATM → EasyCard → Airport MRT'},
 {id:'taipeimain_meet',day:1,name:'타이베이 메인역 · KUMO 합류',emoji:'🤝',lat:25.0478,lng:121.5170,note:'TPE에서 공항 MRT로 A1 타이베이역 도착 → KUMO와 먼저 만나기 → 함께 시먼역 이동',url:'https://www.google.com/maps/search/?api=1&query=Taipei+Main+Station'},
 {id:'hotel',day:1,name:'시먼딩 숙소',emoji:'🏨',lat:25.04272,lng:121.50673,note:'도착 후 짐 먼저 맡기기/풀기 · 숙소 Google Maps 링크 등록 완료'},
 {id:'beef',day:1,name:'우육면',emoji:'🍜',lat:25.0460,lng:121.5070,note:'첫 식사 · 식사 후 배부름 정도에 따라 다음 코스 결정',url:'https://maps.app.goo.gl/HLv8EfxvGcoMaAXa8'},
@@ -110,32 +111,29 @@ const places=[{id:'tpe_arrive',day:1,name:'TPE 타오위안공항',emoji:'✈️
 {id:'ningxia_wc',day:1,name:'무료 공중화장실 · 蓬萊國小 지하주차장',emoji:'🚻',lat:25.055485,lng:121.515614,note:'닝샤야시장 중간부 인근 · 寧夏路35號 지하 · 24시간 운영 주차장 내 공용/장애인 화장실 · 평양가 입구 좌표',url:'https://www.google.com/maps/search/?api=1&query=蓬萊國小地下停車場+寧夏路35號'},
 {id:'ruyi',day:1,name:'루이탕 펑리수',emoji:'🎁',lat:25.0457,lng:121.5100,note:'닝샤 야시장 이후 · 맥주집 가기 전 방문',url:'https://maps.app.goo.gl/zcSYXt8wkFPmcMCQA?g_st=ic'},
 {id:'beer',day:1,name:'시먼딩 맥주 / 꼬치',emoji:'🍺',lat:25.0441,lng:121.5075,note:'1일차 마무리'},
-
-{id:'breakfast',day:2,name:'또우장 + 요우티아오',emoji:'🥣',lat:25.0455,lng:121.5140,note:'시간 여유 있을 때 · 아침 후보',url:'https://maps.app.goo.gl/YCyC6zaQzEuYi5Ar8'},
-{id:'yilan',day:2,name:'이란역',emoji:'🚉',lat:24.7544,lng:121.7581,note:'카발란 이동 거점'},
- {id:'jimdad',day:2,name:"Jim & Dad's Brewing Company",emoji:'🍺',lat:24.7187,lng:121.6918,note:'11:40~12:00 도착 → 약 13:00 출발 · 목요일 11:00~18:00',url:'https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan'},
+{id:'yilan',day:2,name:'이란 도착',emoji:'🚉',lat:24.7544,lng:121.7581,note:'10:30 도착 → 문창 자장면으로 이동'},
+{id:'zhajiang',day:2,name:'宜蘭文昌炸醬麵 · 문창 자장면',emoji:'🍜',lat:24.7579147,lng:121.7514739,note:'11:00 도착 · 文昌路37號 · 목요일 06:00~14:00 · 식사 후 Uber로 Jim & Dad\'s 이동',url:'https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts&g_ep=EgoyMDI2MDkyOC4wIPu8ASoASAFQAw%3D%3D&skid=0c496adb-7880-4fa4-afff-4b4e0a8bb135'},
+{id:'jimdad',day:2,name:"Jim & Dad's Brewing Company",emoji:'🍺',lat:24.7187,lng:121.6918,note:'11:40~12:00 도착 → 약 13:00 출발 · 목요일 11:00~18:00',url:'https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan'},
 {id:'kavalan',day:2,name:'Kavalan Distillery',emoji:'🥃',lat:24.6947,lng:121.6917,note:'증류소 관람 · 시음 · DIY 블렌딩 · 아이스크림 · Bottle Shop'},
-{id:'yilan2',day:2,name:'이란역 복귀',emoji:'🚕',lat:24.7547,lng:121.7584,note:'식사 후 타이베이 이동'},
-{id:'taipei',day:2,name:'타이베이/시먼딩',emoji:'🍺',lat:25.0440,lng:121.5076,note:'2일차 저녁 · 미확정'},
-
+{id:'mangoice',day:2,name:'이란 망고빙수',emoji:'🥭',lat:24.7556,lng:121.7590,note:'16:30 전후 · 카발란 투어+DIY 후 해장 디저트',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
+{id:'yilan2',day:2,name:'이란역 복귀',emoji:'🚉',lat:24.7547,lng:121.7584,note:'망고빙수까지 먹은 뒤 복귀 → 타이베이 이동'},
+{id:'taipei',day:2,name:'타이베이 메인역 복귀',emoji:'🚆',lat:25.0478,lng:121.5170,note:'18:00~18:30 전후 도착 목표 → 새우만두 저녁'},
+{id:'shrimpdumpling',day:2,name:'타이베이 메인역 · 새우만두',emoji:'🥟',lat:25.0463,lng:121.5175,note:'18:00~18:30 타이베이 복귀 후 저녁 · 기존 저장 후보',url:'https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic'},
 {id:'day3hotel',day:3,name:'시먼딩 숙소',emoji:'🏨',lat:25.04272,lng:121.50673,note:'마지막 날 아침 출발 · 숙소 Google Maps 링크 등록 완료'},
- {id:'shrimpdumpling',day:2,name:'타이베이 메인역 · 새우만두',emoji:'🥟',lat:25.0463,lng:121.5175,note:'18:00~18:30 타이베이 복귀 후 저녁 · 기존 저장 후보',url:'https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic'},
 {id:'day3aychung',day:3,name:'아종면선',emoji:'🍜',lat:25.04325,lng:121.50728,note:'마지막 날 아침 · 곱창국수',url:'https://maps.app.goo.gl/BuWUjwNzEPTeG6Pa8?g_st=ic'},
 {id:'day3free',day:3,name:'오전~점심 추가 일정',emoji:'🍽️',lat:25.0460,lng:121.5100,note:'추후 먹거리/쇼핑 확정 · 13:30 이전 종료'},
 {id:'day3pickup',day:3,name:'HOTEL PURI · 짐 픽업',emoji:'🧳',lat:25.04272,lng:121.50673,note:'공항 이동 전 짐 회수'},
 {id:'tpe_depart',day:3,name:'TPE 타오위안공항',emoji:'✈️',lat:25.0797,lng:121.2342,note:'14:30까지 도착 목표 · 16:55 출발 → 20:25 한국 도착'},
-
 {id:'monga',day:1,candidate:true,name:'[배 안 차면 ①] Monga 지파이',emoji:'🍗',lat:25.04225,lng:121.50805,note:'우육면 후 배가 안 차면 추가 → 먹은 뒤 포만감 다시 체크',url:'https://maps.app.goo.gl/3crTYvfLoCXC5uk9A'},
-{id:'aychung_branch',day:1,candidate:true,name:'[그래도 안 차면 ②] 아종면선 소',emoji:'🍜',lat:25.04325,lng:121.50728,note:'지파이 후에도 배가 안 차면 작은 사이즈 → 이후 REAL58',url:'https://maps.app.goo.gl/BuWUjwNzEPTeG6Pa8?g_st=ic'},
+{id:'aychung_branch',day:1,candidate:true,name:'[그래도 안 차면 ②] 아종면선 소',emoji:'🍜',lat:25.04325,lng:121.50728,note:'지파이 후에도 배가 안 차면 작은 사이즈 → 이후 까르푸로 합류',url:'https://maps.app.goo.gl/BuWUjwNzEPTeG6Pa8?g_st=ic'},
 {id:'boba',day:1,candidate:true,name:'흑당밀크티',emoji:'🧋',lat:25.0448,lng:121.5079,note:'후보',url:'https://maps.app.goo.gl/B36xigT9yraPUN3T8?g_st=ic'},
 {id:'dumpling',day:1,candidate:true,name:'새우만두 + 작장면',emoji:'🥟',lat:25.0484,lng:121.5145,note:'타이베이역 인근 후보',url:'https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic'},
 {id:'pancake',day:1,candidate:true,name:'딴삥 / 총좌빙',emoji:'🫓',lat:25.0332,lng:121.5294,note:'융캉제 후보',url:'https://maps.app.goo.gl/iAELHzrduY9R39z76?g_st=ic'},
 {id:'donut',day:1,candidate:true,name:'우유도넛',emoji:'🍩',lat:25.0450,lng:121.5110,note:'후보 · 위치 재확인',url:'https://maps.app.goo.gl/bgU5aYWEizdhXrgG8?g_st=ic'},
 {id:'ice',day:1,candidate:true,name:'삼형제빙수',emoji:'🍧',lat:25.0442,lng:121.5071,note:'망고빙수 NT$280 언급',url:'https://maps.app.goo.gl/Gvsy1GRdn7y5rADU8?g_st=ic'},
 {id:'oyster',day:1,candidate:true,name:'굴전',emoji:'🦪',lat:25.0568,lng:121.5152,note:'닝샤야시장 후보',url:'https://maps.app.goo.gl/eHWQNcKNLajm8Sba6'},
-{id:'zhajiang',day:2,name:'宜蘭文昌炸醬麵 · 문창 자장면',emoji:'🍜',lat:24.7579147,lng:121.7514739,note:'11:00 도착 · 文昌路37號 · 목요일 06:00~14:00 · 식사 후 Uber로 Jim & Dad\'s 이동',url:'https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts&g_ep=EgoyMDI2MDkyOC4wIPu8ASoASAFQAw%3D%3D&skid=0c496adb-7880-4fa4-afff-4b4e0a8bb135'},
-{id:'mangoice',day:2,name:'이란 망고빙수',emoji:'🥭',lat:24.7556,lng:121.7590,note:'16:30 전후 · 카발란 투어+DIY 후 해장 디저트',url:'https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic'},
-{id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'}
+{id:'lotus',day:1,candidate:true,name:'라뜰리에 루터스',emoji:'🎁',lat:25.0520,lng:121.5140,note:'누가크래커 후보',url:'https://maps.app.goo.gl/fFFvh6nw21QJY88W7?g_st=ic'},
+{id:'breakfast',day:2,candidate:true,name:'또우장 + 요우티아오',emoji:'🥣',lat:25.0455,lng:121.5140,note:'DAY 2 아침 선택 후보 · 이란 10:30 도착 일정에 지장 없을 때만',url:'https://maps.app.goo.gl/YCyC6zaQzEuYi5Ar8'}
 ];
 
 const map=L.map('map',{zoomControl:false}).setView([25.045,121.512],14);
@@ -220,23 +218,29 @@ function renderRoute(conf,cand){
  <div class="travelbox"><strong>🌙 닝샤 → 🎁 루이탕 → 🍺 맥주집</strong><br><small>닝샤에서 시먼권으로 복귀하며 루이탕을 들른 뒤 맥주/꼬치로 마무리. 각 구간은 Google Maps 도보 버튼으로 현장 경로 확인.</small></div>` :
  day===2 ? `
  <div class="route-title">🍺🥃 DAY 2 · 이란 양조장 데이</div>
- <div class="travelbox ok"><strong>10:30 · 이란현 도착</strong><br><small>타이베이에서 이란으로 이동 완료. 11:00 식사 장소 도착을 목표로 이동.</small></div>
- <div class="travelbox"><strong>11:00 · 宜蘭文昌炸醬麵</strong><br><small>文昌路37號에서 점심 식사. 목요일 06:00~14:00 영업 확인. 식사 후 Uber 호출 → Jim & Dad's Brewing Company로 이동.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts&g_ep=EgoyMDI2MDkyOC4wIPu8ASoASAFQAw%3D%3D&skid=0c496adb-7880-4fa4-afff-4b4e0a8bb135">🍜 문창 자장면 지도</a></div>
- <div class="travelbox"><strong>11:40~12:00 · Jim & Dad's 도착</strong><br><small>양조장 구경/맥주. 목요일 공식 영업시간 11:00~18:00. 약 13:00에 나와 Kavalan으로 이동.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Jim+%26+Dad%27s+Brewing+Company+Yilan">🍺 Jim & Dad's</a></div>
- <div class="travelbox"><strong>13:00 · Jim & Dad's → Kavalan</strong><br><small>두 양조장 모두 Yuanshan Township에 있어 차량 이동. 14:00 투어보다 여유 있게 도착해 체크/대기.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Jim+%26+Dad%27s+Brewing+Company+Yilan&destination=Kavalan+Distillery&travelmode=driving">🚕 양조장→카발란</a></div>
- <div class="travelbox ok"><strong>14:00~16:00 · Kavalan 투어 + DIY</strong><br><small>14:00 투어 시작 → DIY까지 모두 진행 → 약 16:00 종료 예상. 카발란 관광공장 공식 운영시간은 09:00~18:00.</small></div>
- <div class="travelbox"><strong>16:00 · Kavalan → 이란 시내</strong><br><small>Uber/택시로 이동 → 약 16:30 이란 시내 복귀 목표.</small></div>
- <div class="travelbox"><strong>16:30 · 🥭 해장 망고빙수</strong><br><small>카발란 일정 후 디저트. 기존 저장한 빙수 장소를 지도에 유지.</small>
- <a class="navgo" target="_blank" href="https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic">🥭 망고빙수 지도</a></div>
- <div class="travelbox"><strong>이란 → 타이베이</strong><br><small>빙수 후 바로 복귀. 계획상 18:00~18:30 타이베이 도착 목표. 실제 교통상황에 따라 변동 가능.</small>
- <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Yilan+Station&destination=Taipei+Main+Station&travelmode=transit">🚌/🚆 타이베이 복귀</a></div>
- <div class="travelbox"><strong>18:00~18:30 이후 · 🥟 새우만두 저녁</strong><br><small>타이베이 메인역 근처에서 새우만두 + 작장면 후보. 이란에서 작장면을 먹으므로 현장에서는 새우만두 중심으로 주문하는 흐름.</small>
+ <div class="travelbox ok"><strong>✅ 실제 이동 순서</strong><br><small><b>이란 도착 → 문창 자장면 → Jim & Dad's → Kavalan → 망고빙수 → 이란역 복귀 → 타이베이 메인역 → 새우만두</b><br>문창 자장면은 목요일 14:00 마감이라 반드시 오전 식사로 유지.</small></div>
+ <div class="travelbox"><strong>10:30 · 🚉 이란 도착</strong><br><small>도착 후 바로 文昌路37號 문창 자장면으로 이동.</small></div>
+ <div class="travelbox"><strong>11:00 · 🍜 宜蘭文昌炸醬麵</strong><br><small>목요일 06:00~14:00 영업. 식사 후 Uber 호출 → Jim & Dad's Brewing Company.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/place/%EC%9D%B4%EB%9E%80+%EC%9B%90%EC%B0%BD%EC%A7%9C%EC%9E%A5%EB%AF%B8%EC%97%94/@24.7575079,121.7558119,16.09z/data=!4m6!3m5!1s0x3467e4c455555555:0x96629e1faf389614!8m2!3d24.7579147!4d121.7514739!16s%2Fg%2F1tdbnm59!18m1!1e1?entry=tts">🍜 문창 자장면</a></div>
+ <div class="travelbox"><strong>11:40~12:00 · 🍺 Jim & Dad's</strong><br><small>약 13:00까지. 목요일 11:00~18:00 운영.</small></div>
+ <div class="travelbox"><strong>13:00 · 🚕 Jim & Dad's → Kavalan</strong><br><small>차량 이동 후 14:00 투어 전 체크·대기.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Jim+%26+Dad%27s+Brewing+Company+Yilan&destination=Kavalan+Distillery&travelmode=driving">🚕 Kavalan 이동</a></div>
+ <div class="travelbox ok"><strong>14:00~16:00 · 🥃 Kavalan 투어 + DIY</strong><br><small>투어와 DIY까지 마치고 약 16:00 종료 예상.</small></div>
+ <div class="travelbox"><strong>16:00~16:30 · 🚕 Kavalan → 이란 시내</strong><br><small>바로 이란 시내 빙수집으로 이동.</small></div>
+ <div class="travelbox"><strong>16:30 · 🥭 망고빙수</strong><br><small>빙수까지 먹은 뒤에 이란역으로 복귀. 역을 먼저 들렀다가 다시 시내로 나오는 역주행 제거.</small>
+ <a class="navgo" target="_blank" href="https://maps.app.goo.gl/MujCsfjK3NH7xaEG9?g_st=ic">🥭 빙수 지도</a></div>
+ <div class="travelbox"><strong>빙수 → 🚉 이란역 복귀</strong><br><small>이란에서의 마지막 정차점. 여기서 타이베이행 교통편 탑승.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=Yilan+Station&travelmode=walking">🚉 이란역 길찾기</a></div>
+ <div class="travelbox"><strong>🚆 이란역 → 타이베이 메인역</strong><br><small>계획상 18:00~18:30 전후 타이베이 도착 목표. 실제 열차/버스 및 교통상황에 따라 변동.</small>
+ <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Yilan+Station&destination=Taipei+Main+Station&travelmode=transit">🚆 타이베이 복귀</a></div>
+ <div class="travelbox"><strong>18:00~18:30 이후 · 🥟 새우만두</strong><br><small>타이베이 메인역 인근에서 저녁. 이란에서 자장면을 먹었으므로 새우만두 중심.</small>
  <a class="navgo" target="_blank" href="https://maps.app.goo.gl/Cp3gtFGoTK2tRhgV8?g_st=ic">🥟 새우만두 지도</a></div>` :
  day===3 ? `
  <div class="route-title">📍 DAY 3 귀국일 가이드</div>
+<div class="travelbox ok"><strong>🧭 전체 동선 검수 반영</strong><br><small>
+DAY 1은 까르푸·REAL58 구매품 때문에 숙소 복귀, 융캉제 쇼핑 후 숙소 재복귀가 모두 <b>의도된 짐 보관 동선</b>이라 유지.<br>
+DAY 2는 <b>빙수 → 이란역</b> 순으로 고쳐 불필요한 역 왕복을 제거.<br>
+DAY 3는 HOTEL PURI 인근 아종면선 → 자유 일정 → 숙소 짐 픽업 → 공항 순으로 역주행 없음.</small></div>
  <div class="travelbox"><strong>🏨 HOTEL PURI → 🍜 아종면선</strong><br><small>호텔과 아종면선은 직선거리 약 80m 수준. 골목/횡단을 포함해 도보 약 2~4분 예상.</small>
  <a class="navgo" target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=HOTEL+PURI+XIMEN+BRANCH&destination=Ay-Chung+Flour-Rice+Noodle&travelmode=walking">🚶 약 2~4분 · 실제경로</a></div>
  <div class="travelbox"><strong>🍽️ 오전~점심 자유 슬롯</strong><br><small>먹거리/쇼핑을 추가하되 공항 이동 때문에 13:30 이전 종료.</small></div>
